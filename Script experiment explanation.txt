@@ -1,0 +1,9 @@
+Sicong include a new script called experiment, use it by step and see the logic (detailed comment in each function):
+
+1. Run MasterScript to input the CT images and nii segmented images (CT image contains HU info, nii images are 0s and 1s segmenting out the blood flow region)
+2. Use overlapImages function to overlap Hounsfield Unit on the nii graph, the overlapped version is called newnii
+3. Use labelImage function to label newnii (calcium lesion is labeled 5), the new output is called labeled
+4. Use getCalciumSlices to pseudofind the region of interest, the output is a vector called calciumslices including the slices(z-dim) contains calcium signal.
+
+Next:
+If logic correct, add these steps to MasterScript and delete experiment.m and Script experiment explanation.txt
