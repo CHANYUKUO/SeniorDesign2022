@@ -62,7 +62,7 @@ plot3(...
     'square','Markersize',4,'MarkerFaceColor','k','Color','k');
 set(gcf,'Color','white');
 view(140,80)
-title('Original output');
+title('Centerline and SegmentationNII');
 x = xTemp;
 y = yTemp;
 z = zTemp;

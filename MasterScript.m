@@ -14,11 +14,10 @@ addpath("Functions/Skeleton3D/"); % Function Required For centerline_func_seg
 %% Defining TID (Step2: Modified from 2020Danielle)
 Labeled = TID(rawImage,segmentedImage);
 
+%% display Labeled
+display_label(Labeled,segmentedImage,menu('What would you like to color?','1','2'))
 %% Calculating TID percentage (Step3: 2019DirectCopyFunction 2020VanessaSameCode)
-DataTable=distribution(Labeled)
+DataTable=distribution(Labeled);
 
 %% centerline_func_seg (Step4: Modified from 2019centerline_func_seg,xyz is the center line coordinate)
 [x,y,z,skel] = centerline_func_seg(segmentedImage);
-
-%% 
-[lin_vessel,err] = ct_linearize(Labeled,[x;y;z],[1,1,1],3,5);
