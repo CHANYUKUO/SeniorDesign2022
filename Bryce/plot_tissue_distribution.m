@@ -1,4 +1,5 @@
 rgb_Labeled=zeros(x,y,z,3) 
+%%% test
 %display(size(rgb_Labeled))
 for i=1:x
     for j=1:y
