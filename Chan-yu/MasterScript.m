@@ -18,4 +18,8 @@ display_label(Labeled,segmentedVessel,menu('What would you like to color?','1','
 %% Calculating TID percentage (Step4: 2019DirectCopyFunction 2020VanessaSameCode)
 DataTable=distribution(Labeled)
 
+%Transform Image(Step5)
+segmentedVessel_transformation=TransformImage(segmentedVessel,x,y,z,32,50,50);
+rawImage_transformation=TransformImage(rawImage,x,y,z,32,50,50);
+
 
