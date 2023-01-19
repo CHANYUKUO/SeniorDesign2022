@@ -6,7 +6,8 @@ function Labeled = TID(rawImage,segmented_image)
     % Describing Tissue Bounds    
         aorta_high=985; 
         aorta_low=650;
-        
+    %Comments: Fixing the name and range: Blood,
+    %Comments: Might have to do each heart individually
         adventitia_high=600; 
         adventitia_low=277;
         
@@ -17,7 +18,8 @@ function Labeled = TID(rawImage,segmented_image)
         fat_low=-148;
         
         calcified_high=MAX;
-        calcified_low=1000;  
+        calcified_low=1000;
+     % Design: sliding bars 3D visualization (If possible) 
 %% Step 2: Label image based on segmented_image
     [x y z]=size(segmented_image);
     Labeled=zeros(x, y, z);
