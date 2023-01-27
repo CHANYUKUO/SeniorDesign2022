@@ -1,7 +1,6 @@
 function [x,y,z,skel] = ...
     centerline_func_seg(segmentedImage)
 %% Load your vessel image
-
 % Store home folder
 home = pwd;
 
@@ -66,4 +65,5 @@ title('Centerline and SegmentationNII');
 x = xTemp;
 y = yTemp;
 z = zTemp;
+hold off
 end
