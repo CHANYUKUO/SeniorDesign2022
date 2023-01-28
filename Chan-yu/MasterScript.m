@@ -11,6 +11,8 @@ addpath("Functions/Skeleton3D/"); % Function Required For centerline_func_seg
 % data loaded compare to itk-snap: x-> y; y-> x; 
 %% flipping only for recent 62481_Coronary case (Optional Step)
 segmentedVessel=segmented_vessel_flipped(segmentedVessel); 
+
+
 %% centerline_func_seg (Step2: Modified from 2019centerline_func_seg,xyz is the center line coordinate)
 [x,y,z,skel] = centerline_func_seg(segmentedVessel);
 
@@ -28,7 +30,6 @@ display_2D_label(Labeled,rawImage)
 %% Calculating TID percentage (Step6: 2019DirectCopy Function 2020VanessaSameCode)
 DataTable=distribution(Labeled)
 %%
-
 %% Waiting for implementation in expansion. Transformation between coordinates
 %Transform Image(Step5)
 %segmentedVessel_transformation=TransformImage(segmentedVessel,x,y,z,32,50,50);
