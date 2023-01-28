@@ -25,9 +25,10 @@ addpath("Functions/Skeleton3D/"); % Function Required For centerline_func_seg
 x_width=32;
 y_width=50;
 z_width=50;
-[segmentedVessel_transformation,transformationMatrix]=TransformImage(segmentedVessel,x,y,z,32,50,50);
-[rawImage_transformation,transformationMatrix]=TransformImage(rawImage,x,y,z,32,50,50);
-Labeled = TID(rawImage_transformation);
+%[segmentedVessel_transformation,transformationMatrix]=TransformImage(segmentedVessel,x,y,z,32,50,50);
+%[rawImage_transformation,transformationMatrix]=TransformImage(rawImage,x,y,z,32,50,50);
+segmentedVessel_transformation=CylindricalExpansion(rawImage,x,y,z,10);
+Labeled = TID(rawImage);
 DisplayImage
 %[labeled_transformation,transformationMatrix]=TransformImage(Labeled,x,y,z,32,50,50);
 
