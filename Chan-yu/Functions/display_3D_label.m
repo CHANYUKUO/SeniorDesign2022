@@ -1,4 +1,4 @@
-function display_label(Labeled,segmentedImage)
+function display_3D_label(Labeled,segmentedImage)
     userinput = true;
     %pixel_length_ratio=2.0480; %% pixel per mm
     unit = 'mm'
