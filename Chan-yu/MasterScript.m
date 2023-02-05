@@ -18,11 +18,19 @@ segmentedVessel=segmented_vessel_flipped(segmentedVessel);
 %% (Bryce: Step3: Expansion from Vessel of interest to Region of interest)
 segmentedVessel_Expansion=CylindricalExpansion(rawImage,x,y,z,10); %% input xyz of center line and expand by 10 (p
 %% Defining TID (Step4: Modified from 2020Danielle)
-Labeled = TID(rawImage,segmentedVessel_Expansion);
+Labeled_expansion = TID(rawImage,segmentedVessel_Expansion);
+%%
+Labeled_vessel = TID(rawImage,segmentedVessel);
 %% display Labeled (Step5: Visually Display the Segmented data and where specific label located)
-display_3D_label(Labeled,segmentedVessel_Expansion);
+%display_3D_label(Labeled_vessel,segmentedVessel);
+display_3D_label(Labeled_expansion,segmentedVessel_Expansion);
 %% display_2D_label(Labeled,Original_img)
-display_2D_label(Labeled,rawImage);
+%display_2D_label(Labeled_vessel,rawImage);
+[lesion_start,lesion_end]=display_2D_label(Labeled_expansion,rawImage);
+%%
+lesion_start.Value
+lesion_end.Value
+
 %% Calculating TID percentage (Step6: 2019DirectCopy Function 2020VanessaSameCode)
 DataTable=distribution(Labeled);
 
