@@ -1,7 +1,8 @@
-function Labeled = TID(rawImage,segmented_image)
+function [Labeled,total_tissue_type] = TID(rawImage,segmented_image)
     %% Modified from 2022 
     %% Step1: Threshold Values
     MAX=max(max(max(rawImage)));
+    total_tissue_type=5;% amount of tissue we classify
     % Thresholds need to be changed
     % Describing Tissue Bounds    
         aorta_high=985; 

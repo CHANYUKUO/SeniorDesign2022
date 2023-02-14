@@ -1,5 +1,5 @@
 function [x,y,z,skel] = ...
-    centerline_func_seg(segmentedImage)
+    centerline_func_seg(segmentedImage,title_text)
 %% Load your vessel image
 % Store home folder
 home = pwd;
@@ -42,9 +42,6 @@ skel = Skeleton3D(Image_binary);
 
 % view the centerline output    
 figure();
-% xlim(xbound);
-% ylim(ybound);
-% zlim(zbound);
 col=[.7 .7 .8];
 hiso = patch(isosurface(Image_binary,0),...
     'FaceColor',col,'EdgeColor','none');
@@ -61,7 +58,7 @@ plot3(...
     'square','Markersize',4,'MarkerFaceColor','k','Color','k');
 set(gcf,'Color','white');
 view(140,80)
-title('Centerline and SegmentationNII');
+title(title_text);
 x = xTemp;
 y = yTemp;
 z = zTemp;

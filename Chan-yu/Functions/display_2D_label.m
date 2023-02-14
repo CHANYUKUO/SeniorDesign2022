@@ -1,4 +1,4 @@
-function [lesion_start,lesion_end]=display_2D_label(Labeled,Original_img)
+function [lesion_start,lesion_end,z_min]=display_2D_label(Labeled,Original_img)
 %% obtain the x y z range
     [x y z]=size(Labeled);
     index=[];
@@ -88,5 +88,5 @@ function update_image(new_labeled,new_Original,new_value,x_ax,y_ax,z_ax,r_ax,x,y
 end
 function start_end_recorder(btn,z,holder)
     holder.Value=z.Value;
-    display("The start of lesion is "+holder.Value);
+    display("register z_position for lesion: "+holder.Value);
 end
