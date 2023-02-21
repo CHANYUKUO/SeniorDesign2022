@@ -13,7 +13,7 @@ Image = segmentedImage;
 
 % add additional slices at the end of the vessel to improve the result of
 % centerline extraction
-elongated_slice_number=3;
+elongated_slice_number=0;
 Image=double(Image);
 Image_2=[];
 for i=1:(size(Image,3)+elongated_slice_number)

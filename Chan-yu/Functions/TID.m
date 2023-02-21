@@ -6,10 +6,10 @@ function [Labeled,total_tissue_type] = TID(rawImage,segmented_image)
     % Thresholds need to be changed
     % Describing Tissue Bounds    
         aorta_high=985; 
-        aorta_low=650;
+        aorta_low=626;
     %Comments: Fixing the name and range: Blood,
     %Comments: Might have to do each heart individually
-        adventitia_high=600; 
+        adventitia_high=625; 
         adventitia_low=277;
         
         muscle_high=10;

@@ -25,14 +25,15 @@ segmentedVessel_Expansion=CylindricalExpansion(segmentedVessel,x,y,z,10); %% inp
 display_3D_label(Labeled_expansion,segmentedVessel_Expansion);
 %% display_2D_label(Labeled,Original_img), only register z as the start and end 
 %display_2D_label(Labeled_vessel,rawImage);
-[lesion_start,lesion_end,z_min]=display_2D_label(Labeled_expansion,rawImage);
+[lesion_start,lesion_end,lesion_axis,x_min,y_min,z_min]=display_2D_label(Labeled_expansion,rawImage,"use size of labeled_vessel");
 %% Here is the lesion starting and end points
 lesion_start.Value 
 lesion_end.Value
+%% classify the starting and end points into 4 categories by z_length
+[start_value,end_value,lesion_axis_st]=classify(round(lesion_start.Value) ,round(lesion_end.Value),round(lesion_axis.Value));
 %% Assuming only across z_slices ((currently using segmentedVessel))
-[relative_coordinate_matrix,xy_relative_coordinate,interpolated_x_centerpoint,interpolated_y_centerpoint]=straighten_expanded_region(segmentedVessel,Labeled_vessel,round(lesion_start.Value),round(lesion_end.Value),z_min);
-%% calculate the % of tissue at the same x,y,z location
-[graph]=pixel_percentage(relative_coordinate_matrix,xy_relative_coordinate,interpolated_x_centerpoint(1,1),interpolated_y_centerpoint(1,2),total_tissue_type);
+straighten_expanded_region(segmentedVessel_Expansion,Labeled_expansion,start_value,end_value,lesion_axis_st,x_min,y_min,z_min);
+
 %% Calculating TID percentage (Step6: 2019DirectCopy Function 2020VanessaSameCode)
 DataTable=distribution(Labeled);
 

@@ -1,74 +1,50 @@
-
-function [relative_coordinate_matrix,xy_relative_coordinate,interpolated_x_centerpoint,interpolated_y_centerpoint]=straighten_expanded_region(segmentedVessel_Expansion,Labeled_expansion,lesion_start,lesion_end,z_min)
+function []=straighten_expanded_region(segmentedVessel_Expansion,Labeled_expansion,lesion_start,lesion_end,lesion_axis_st,x_min,y_min,z_min)
+    %% cut the image from start to end based on z_slice
+    [Labeled_expansion,z_min,tag_2_transform_back]=transform_axis(Labeled_expansion,lesion_axis_st,x_min,y_min,z_min);
+    [segmentedVessel_Expansion,~,~]=transform_axis(segmentedVessel_Expansion,lesion_axis_st,x_min,y_min,z_min);
+    
     lesion_start_256=lesion_start+z_min;lesion_end_256=lesion_end+z_min;
     if lesion_start<lesion_end
        lesion_segmented_image=segmentedVessel_Expansion(:,:,lesion_start_256:lesion_end_256);
+       lesion_labeled=Labeled_expansion(:,:,lesion_start_256:lesion_end_256);
     else
        lesion_segmented_image=segmentedVessel_Expansion(:,:,lesion_end_256:lesion_start_256);
+       lesion_labeled=Labeled_expansion(:,:,lesion_start_256:lesion_end_256);
     end
-    [not_interpolated_x_centerpoint,not_interpolated_y_centerpoint,not_interpolated_z_centerpoint,skel]=centerline_func_seg(lesion_segmented_image,'centerline of selected lesion region');
-    %[interpolated_x_centerpoint,interpolated_y_centerpoint,interpolated_z_centerpoint]=interpolate_z_center_point(not_interpolated_x_centerpoint,not_interpolated_y_centerpoint,not_interpolated_z_centerpoint);
-    % no need to interpolate
-    
-    %find a reference plane
-    interpolated_x_centerpoint=not_interpolated_x_centerpoint;interpolated_y_centerpoint=not_interpolated_y_centerpoint;interpolated_z_centerpoint=not_interpolated_z_centerpoint;
-    
-    lesion_start_slice = lesion_segmented_image(:,:,interpolated_z_centerpoint(1)); %% get the bottom slice of lesion interested
-    %obtain each pixel relative x,y compare to centerline z
-    [x_range,y_range,z_range] = size(lesion_segmented_image);
-    xy_relative_coordinate=[];
+    %% 
+    %[lesion_start,lesion_end,z_min]=display_2D_label(lesion_labeled,rawImage)
+    [x_centerpoint,y_centerpoint,z_centerpoint,~]=centerline_func_seg(lesion_segmented_image,'centerline of selected lesion region');
+    lesion_start_slice = lesion_segmented_image(:,:,z_centerpoint(1));
+    [x_range,y_range,z_range] = size(lesion_segmented_image)
+    x_relative_coordinates=[];
+    y_relative_coordinates=[];
     for x_index = 1:x_range
        for y_index=1:y_range
-            if lesion_start_slice(x_index,y_index)==1
-                x_relative_coordinates=x_index-interpolated_x_centerpoint(1);
-                y_relative_coordinates=y_index-interpolated_y_centerpoint(1);
-                xy_relative_coordinate=[xy_relative_coordinate;x_relative_coordinates y_relative_coordinates];
+            if lesion_start_slice(x_index,y_index)>=1 % 
+                x_relative_coordinates=[x_relative_coordinates; x_index-x_centerpoint(1)];
+                y_relative_coordinates=[y_relative_coordinates; y_index-y_centerpoint(1)];
+                %xy_relative_coordinate=[xy_relative_coordinate;x_relative_coordinates y_relative_coordinates];
             end
        end
     end
-    %xy_relative_coordinate
-    %imshow(squeeze(lesion_segmented_image(:,:,1)));
-   % xy_relative_coordinate is the relative coordinate compare to centerpoint that we will be using for the remainder of the test
-   %% find each x_y_coordinate across z slice
-   relative_coordinate_matrix=zeros(size(lesion_segmented_image));
-   for index=1:size(xy_relative_coordinate,1)
-       first_sliced_absolute_coordinate=[xy_relative_coordinate(index,1)+interpolated_x_centerpoint(1) xy_relative_coordinate(index,2)+interpolated_y_centerpoint(1)];
-       for z_index=1:interpolated_z_centerpoint(end)-interpolated_z_centerpoint(1)
-           % find the centerpoint at z_index
-           % compute the absolute x,y coordinate
-           x_coordinate=xy_relative_coordinate(index,1)+interpolated_x_centerpoint(z_index); % convert back to absolute coordinate
-           y_coordinate=xy_relative_coordinate(index,2)+interpolated_y_centerpoint(z_index);
-           % find the index 
-           TID=Labeled_expansion(x_coordinate,y_coordinate,z_index+interpolated_z_centerpoint(1)+z_min);
-           relative_coordinate_matrix(first_sliced_absolute_coordinate(1),first_sliced_absolute_coordinate(2),z_index+interpolated_z_centerpoint(1));
-       end
-   end
-%relative_coordinate_matrix=lesion_segmented_image;
-
-   %% drawing 
-   [x y z]=size(relative_coordinate_matrix);
-   newImage = zeros(x, y, z);
-    pixel_count=0;
-    for i=1:x
-        for j=1:y
-            for k=1:z
-                if relative_coordinate_matrix(i,j,k)>0
-                    newImage(i,j,k)=1;
-                    pixel_count=pixel_count+1;
+    %% showing lesion_start_slie for visual pupose
+    %imshow(lesion_start_slice);
+    lesion_st = zeros(size(lesion_labeled));
+    visual_lesion_st=lesion_st;
+    for index = 1:length(x_relative_coordinates)% give all first column (or x)
+            for c_index = 1:length(z_centerpoint)
+                if all([x_relative_coordinates(index)==0,y_relative_coordinates(index)==0])
+                    visual_lesion_st(x_relative_coordinates(index)+x_centerpoint(1),y_relative_coordinates(index)+y_centerpoint(1),z_centerpoint(c_index))=6;
+                else
+                    visual_lesion_st(x_relative_coordinates(index)+x_centerpoint(1),y_relative_coordinates(index)+y_centerpoint(1),z_centerpoint(c_index))=lesion_labeled(x_relative_coordinates(index)+x_centerpoint(c_index),y_relative_coordinates(index)+y_centerpoint(c_index),z_centerpoint(c_index));
                 end
+                lesion_st(x_relative_coordinates(index)+x_centerpoint(1),y_relative_coordinates(index)+y_centerpoint(1),z_centerpoint(c_index))=lesion_labeled(x_relative_coordinates(index)+x_centerpoint(c_index),y_relative_coordinates(index)+y_centerpoint(c_index),z_centerpoint(c_index));
             end
-        end
     end
-    figure(5);
-    col=[.7 .7 .8];
-    hiso = patch(isosurface(newImage,0),...
-        'FaceColor',col,'EdgeColor','none');
-    axis equal;axis off;
-    lighting phong;
-    set(gca,'DataAspectRatio',[1 1 1])
-    camlight;
-    alpha(0.5)
-   % can't use negative to index ,
-   % back to absolute coordinate of the first slice
-   % relative_coordinate should have a straight cylinder 3d matrix 
+
+%imshow(lesion_st);
+[lesion_start,lesion_end,z_min]=display_2D_label(visual_lesion_st,zeros(size(lesion_st)),'lesion')
+[straightend_transformed_back_lesion,~,~]=transform_axis(lesion_st,tag_2_transform_back,x_min,y_min,z_min);
 end
+
+
