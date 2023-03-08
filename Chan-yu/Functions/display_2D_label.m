@@ -23,8 +23,8 @@ function [lesion_start,lesion_end,sld_btn,x_min,y_min,z_min]=display_2D_label(La
     %%
     map=[[0,0,0];[0,0,1];[0,1,0];[1,0,0];[0,1,1];[1,1,0];[1,1,1]];
     if mode=="lesion"
-        x_ui_value=5*(x_max-x_min);
-        y_ui_value=5*(y_max-y_min);
+        x_ui_value=2*(x_max-x_min);
+        y_ui_value=2*(y_max-y_min);
         r_title='Empty';
         button_factor=false;
     else

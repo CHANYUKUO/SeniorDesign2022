@@ -41,7 +41,7 @@ for i=1:size(x,1)-1
         t=t+abs(step_size);
         
     end
-    display(100*i/size(x,1)+" % done");
+    
 end
     
     
