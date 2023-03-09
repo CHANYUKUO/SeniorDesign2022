@@ -14,13 +14,13 @@ function display_3D_label(Labeled,segmentedImage)
                 tissue_index = 2;
                 legend_text = 'muscle';
             case 3
-                tissue_index =4;
+                tissue_index =3;
                 legend_text = 'blood';
             case 4
-                tissue_index =5;
+                tissue_index =4;
                 legend_text = 'calcium';
             case 5
-                tissue_index =6;
+                tissue_index =5;
                 legend_text ='vessel';
             case 6
                 userinput = false;
