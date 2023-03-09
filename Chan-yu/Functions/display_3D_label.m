@@ -4,7 +4,7 @@ function display_3D_label(Labeled,segmentedImage)
     unit = 'mm'
     figure(3)
     while userinput
-        map_type = menu('What would you like to color?','fat','muscle','blood','calcium','quit');
+        map_type = menu('What would you like to color?','fat','muscle','blood','calcium','vessel','quit');
         close 3;
         switch map_type
             case 1
@@ -20,6 +20,9 @@ function display_3D_label(Labeled,segmentedImage)
                 tissue_index =5;
                 legend_text = 'calcium';
             case 5
+                tissue_index =6;
+                legend_text ='vessel';
+            case 6
                 userinput = false;
                 disp('Thank you! See you soon.');
                 break
