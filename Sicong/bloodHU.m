@@ -14,3 +14,6 @@ whitePixelsIndex = find(overlappednii ~= 0);                               % fin
 bloodHUval = overlappednii(whitePixelsIndex);                              % get the value of each white pixel (this should give us the HU value of the pixel)
 
 
+
+
+

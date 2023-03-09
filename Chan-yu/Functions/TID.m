@@ -5,18 +5,18 @@ function [Labeled,total_tissue_type] = TID(rawImage,segmented_image)
     total_tissue_type=5;% amount of tissue we classify
     % Thresholds need to be changed
     % Describing Tissue Bounds    
-        aorta_high=26; 
-        aorta_low=6;
+        aorta_high=700;%565; %419 
+        aorta_low=194;%302; %344
     %Comments: Fixing the name and range: Blood,
     %Comments: Might have to do each heart individually
-        adventitia_high=625; 
-        adventitia_low=277;
+        adventitia_high=0; 
+        adventitia_low=0;
         
-        muscle_high=10;
-        muscle_low=-70;
+        muscle_high=55; %40
+        muscle_low=35; %10
         
-        fat_high=-71;
-        fat_low=-148;
+        fat_high=-90; %-50
+        fat_low=-120; %-100
         
         calcified_high=MAX;
         calcified_low=1000;
