@@ -21,7 +21,7 @@ function [lesion_start,lesion_end,sld_btn,x_min,y_min,z_min]=display_2D_label(La
     new_Original = Original_img(x_min:x_max, y_min:y_max,z_min:z_max);
     [x y z] = size(new_labeled);
     %%
-    map=[[0,0,0];[0,0,1];[0,1,0];[1,0,0];[0,1,1];[1,1,0];[1,1,1]];
+    map=[[0,0,0];[0,0,1];[1,0,0];[0,1,1];[0,1,0];[1,1,0];[1,1,1]];
     if mode=="lesion"
         x_ui_value=2*(x_max-x_min);
         y_ui_value=2*(y_max-y_min);

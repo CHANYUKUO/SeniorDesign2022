@@ -61,11 +61,34 @@ function display_3D_label(Labeled,segmentedImage)
             end
         end
         hiso = patch(isosurface(newImage,0),...
-            'FaceColor',[1,0,0],'EdgeColor','none');
+            'FaceColor',[1,1,0],'EdgeColor',[1,1,0]);
         alpha(0.5)
         dim = [.65 .32 .5 .5];
         volume = pixel_count/(pixel_length_ratio)^2*Slice_height_per_pixel;
         annotation('textbox',dim,'String',[legend_text ' size is ' num2str(volume) ' ' unit '^3'],'FitBoxToText','on');
-        legend('Region Of Interest',legend_text)
+        
+    %%
+    newImage = zeros(x, y, z);
+        %% step 
+        pixel_count=0;
+        for i=1:x
+            for j=1:y
+                for k=1:z
+                    if Labeled(i,j,k)==3 
+                        newImage(i,j,k)=1;
+                        pixel_count=pixel_count+1;
+                    end
+                    if Labeled(i,j,k)==5
+                        newImage(i,j,k)=1;
+                        pixel_count=pixel_count+1;
+                    end
+                end
+            end
+        end
+        hiso = patch(isosurface(newImage,0),...
+            'FaceColor',[1,0,0],'EdgeColor','none');
+        alpha(0.5)
+        dim = [.65 .32 .5 .5];
+        legend('Region Of Interest',legend_text,'blood')
     end
 end

@@ -3,18 +3,22 @@ function [Labeled,total_tissue_type] = TID(rawImage,segmented_image)
     %% Step1: Threshold Values
     MAX=max(max(max(rawImage)));
     total_tissue_type=5;% amount of tissue we classify
-        vessel_high=625
-        vessel_low=277
+        %vessel_high=625;
+        %vessel_low=277;
+        vessel_high=194;
+        vessel_low=55;
         % Labeling blood =4
-        blood_high=990; 
-        blood_low=626;
+        %blood_high=990; 
+        %blood_low=626;
+        blood_high=700;
+        blood_low=194;
         % Labeling vessel = 3
         % Muscle = 2
-        muscle_high=60;
-        muscle_low=0;
+        muscle_high=55;
+        muscle_low=35;
         % fat = 1
-        fat_high=0;
-        fat_low=-100;
+        fat_high=-90;
+        fat_low=-120;
         %Labeling Lesion = 5
         calcified_high=MAX;
         calcified_low=990;
@@ -32,9 +36,9 @@ function [Labeled,total_tissue_type] = TID(rawImage,segmented_image)
                        Labeled(i,j,k)=2;
                     elseif rawImage(i,j,k)>=blood_low && rawImage(i,j,k)<=blood_high
                        Labeled(i,j,k)=3;
-                    elseif rawImage(i,j,k)>=calcified_low && rawImage(i,j,k)<=calcified_high
-                       Labeled(i,j,k)=4;
                     elseif rawImage(i,j,k)>=vessel_low && rawImage(i,j,k)<=vessel_high
+                       Labeled(i,j,k)=4;
+                    elseif rawImage(i,j,k)>=calcified_low && rawImage(i,j,k)<=calcified_high
                        Labeled(i,j,k)=5;
                     else
                        Labeled(i,j,k)=0; 
