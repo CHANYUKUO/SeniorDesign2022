@@ -1,0 +1,46 @@
+function [Labeled] = TID(rawImage,segmented_ROI,segmented_vessel)
+    %% Modified from 2022 
+    %% Step1: Threshold Values
+    fat_high=-90;
+    fat_low=-120;
+    fat_index=1;
+    muscle_high=55;
+    muscle_low=35;
+    muscle_index=2;
+    blood_high=700;
+    blood_low=194;
+    blood_index=3;
+    MAX=max(max(max(rawImage)));
+    calcium_high=MAX;
+    calcium_low=990;
+    calcium_index=4;
+
+    high_array=[fat_high muscle_high blood_high calcium_high];
+    low_array=[fat_low muscle_low blood_low calcium_low];
+    index_array=[fat_index muscle_index blood_index calcium_index];
+       
+     % Design: sliding bars 3D visualization (If possible) 
+%% Step 2: Label image based on segmented_ROI
+    [x y z]=size(segmented_ROI);
+    Labeled=zeros(x, y, z);
+    for i=1:x
+        for j=1:y
+            for k=1:z
+                if segmented_vessel(i,j,k)==1
+                    Labeled(i,j,k)=blood_index;
+                if segmented_ROI(i,j,k)==1
+                    for w=1:size(high_array)
+                        if rawImage(i,j,k)>=low_array[w] && rawImage(i,j,k)<=high_array[w]
+                           Labeled(i,j,k)=index_array[2];
+                           continue_check=true;
+                        end 
+                    end
+                    if continue_check
+                        continue
+                    end
+                    Labeled(i,j,k)=0;    
+                end
+            end
+        end
+    end
+end

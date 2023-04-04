@@ -17,19 +17,19 @@ function [lesion_start,lesion_end,sld_btn,x_min,y_min,z_min]=display_2D_label(La
     y_min=min(index(:,2));
     z_min=min(index(:,3));
     z_max=max(index(:,3));    
-    new_labeled = Labeled(x_min:x_max, y_min:y_max,z_min:z_max);
-    new_Original = Original_img(x_min:x_max, y_min:y_max,z_min:z_max);
+    new_labeled = Labeled(x_min:x_max, y_min:y_max,z_min:z_max)+1;
+    new_Original = Original_img(x_min:x_max, y_min:y_max,z_min:z_max)+1;
     [x y z] = size(new_labeled);
     %%
-    map=[[0,0,0];[0,0,1];[1,0,0];[0,1,1];[0,1,0];[1,1,0];[1,1,1]];
+    map=[[0,0,0];[0,0,1];[0,1,0];[1,0,0];[0,1,1];[1,1,1]];
     if mode=="lesion"
         x_ui_value=2*(x_max-x_min);
         y_ui_value=2*(y_max-y_min);
         r_title='Empty';
         button_factor=false;
     else
-        x_ui_value=x_max-x_min;
-        y_ui_value=y_max-y_min;
+        x_ui_value=50;
+        y_ui_value=50;
         r_title='Raw Image';
         button_factor=true;
     end
@@ -119,7 +119,7 @@ end
 function display_colorbar(new_labeled)
         for num = 0:6
             if any(new_labeled(:)==num)
-                display(int2str(num)+" present")
+                display(int2str(num-1)+" present")
             end
         end
 end

@@ -6,12 +6,13 @@ function display_3D_label(Labeled,segmentedImage,TID_info)
     while userinput
         map_type = menu('What would you like to color?',TID_info.text_array(1),TID_info.text_array(2),TID_info.text_array(3),TID_info.text_array(4),'quit');
         close 3;
-        if map_type==5
+        number_of_Tissue= size(TID_info.text_array);
+        if map_type==number_of_Tissue+1
             userinput = false;
             disp('Thank you! See you soon.');
             break
         end
-        tissue_index =TID_info.index_array(map_type);
+        tissue_index =TID_info.index_array(map_type)
         legend_text = TID_info.text_array(map_type);
         prompt = {'Enter pixel resolution (pixel/mm)','Slice Thickness (mm)'};
         dlgtitle = 'Voxel Resolution';
@@ -55,12 +56,12 @@ function display_3D_label(Labeled,segmentedImage,TID_info)
             
         %%
         newImage = zeros(x, y, z);
-            %% for blood 
+            %% step 
             pixel_count=0;
             for i=1:x
                 for j=1:y
                     for k=1:z
-                        if Labeled(i,j,k)==TID_info.index_array(3) %% this is blood 
+                        if Labeled(i,j,k)==TID_inf 
                             newImage(i,j,k)=1;
                             pixel_count=pixel_count+1;
                         end

@@ -1,48 +1,51 @@
-function [Labeled,total_tissue_type] = TID(rawImage,segmented_image)
+function [labeled_ROI,TID_info] = TID(raw_image,segmented_ROI,segmented_vessel)
     %% Modified from 2022 
     %% Step1: Threshold Values
-    MAX=max(max(max(rawImage)));
-    total_tissue_type=5;% amount of tissue we classify
-        %vessel_high=625;
-        %vessel_low=277;
-        vessel_high=194;
-        vessel_low=55;
-        % Labeling blood =4
-        %blood_high=990; 
-        %blood_low=626;
-        blood_high=700;
-        blood_low=194;
-        % Labeling vessel = 3
-        % Muscle = 2
-        muscle_high=55;
-        muscle_low=35;
-        % fat = 1
-        fat_high=-90;
-        fat_low=-120;
-        %Labeling Lesion = 5
-        calcified_high=MAX;
-        calcified_low=990;
+    fat_high=-71;
+    fat_low=-148;
+    fat_index=1;
+    muscle_high=100;
+    muscle_low=-70;
+    muscle_index=2;
+    blood_high=800;
+    blood_low=194;
+    blood_index=3;
+    MAX=max(max(max(raw_image)));
+    calcium_high=MAX;
+    calcium_low=900;
+    calcium_index=4;
+
+
+    TID_info.high_array=[fat_high muscle_high blood_high calcium_high];
+    TID_info.low_array=[fat_low muscle_low blood_low calcium_low];
+    TID_info.index_array=[fat_index muscle_index blood_index calcium_index];
+    TID_info.text_array=["fat" "muscle" "blood" "calcium"];
+    
      % Design: sliding bars 3D visualization (If possible) 
-%% Step 2: Label image based on segmented_image
-    [x y z]=size(segmented_image);
-    Labeled=zeros(x, y, z);
+%% Step 2: Label image based on segmented_ROI
+    [x y z]=size(segmented_ROI);
+    labeled_ROI=zeros(x, y, z);
     for i=1:x
         for j=1:y
             for k=1:z
-                if segmented_image(i,j,k)==1
-                    if rawImage(i,j,k)>=fat_low && rawImage(i,j,k)<=fat_high
-                       Labeled(i,j,k)=1;
-                    elseif rawImage(i,j,k)>=muscle_low && rawImage(i,j,k)<=muscle_high
-                       Labeled(i,j,k)=2;
-                    elseif rawImage(i,j,k)>=blood_low && rawImage(i,j,k)<=blood_high
-                       Labeled(i,j,k)=3;
-                    elseif rawImage(i,j,k)>=vessel_low && rawImage(i,j,k)<=vessel_high
-                       Labeled(i,j,k)=4;
-                    elseif rawImage(i,j,k)>=calcified_low && rawImage(i,j,k)<=calcified_high
-                       Labeled(i,j,k)=5;
-                    else
-                       Labeled(i,j,k)=0; 
-                    end    
+                %default blood index for vessel
+                continue_check=false;
+                if segmented_vessel(i,j,k)==1
+                    labeled_ROI(i,j,k)=blood_index;
+                    continue_check=true;
+                end
+                %relabel for ROI 
+                if segmented_ROI(i,j,k)==1
+                    for array_index=1:size(TID_info.high_array,2)
+                        if raw_image(i,j,k)>=TID_info.low_array(array_index) && raw_image(i,j,k)<=TID_info.high_array(array_index)
+                           labeled_ROI(i,j,k)=TID_info.index_array(array_index);
+                           continue_check=true;
+                        end 
+                    end
+                    if continue_check
+                        continue
+                    end
+                    labeled_ROI(i,j,k)=0;    
                 end
             end
         end

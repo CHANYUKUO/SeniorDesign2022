@@ -1,5 +1,5 @@
 function [start_value,end_value,axis_st]=classify(start_value,end_value,axis_value)
-    groups=[0 6 12 18 24 30 36 42 48 266]; % 6 groups, 0-6, 6-12,12-24,24-48,48-96,96+ (z slice won't go over 266)
+    groups=[0 30 266]; % 6 groups, 0-6, 6-12,12-24,24-48,48-96,96+ (z slice won't go over 266)
     if end_value>start_value
         range=end_value-start_value;
         mid_point=round(range/2)+start_value;
